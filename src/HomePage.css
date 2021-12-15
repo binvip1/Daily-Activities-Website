@@ -1,0 +1,17 @@
+@media only screen and (max-width: 800px) {
+    .homepage {
+        display: none;
+    }
+    .homepage1 {
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .homepage {
+        display: block;
+    }
+    .homepage1 {
+        display: none;
+    }
+}
