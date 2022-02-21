@@ -10,9 +10,6 @@ export default function Nav() {
                 <Link to="/" className="nav-style">
                     <li>Home Page</li>
                 </Link>
-                <Link to="/Info" className="nav-style">
-                    <li>Info</li>
-                </Link>
                 <Link to="/TodoApp" className="nav-style">
                     <li>Todo App</li>
                 </Link>
