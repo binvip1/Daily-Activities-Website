@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
+import axios from 'axios';
 
 function TodoList() {
   const [search, setSearch] = useState('');
   const [todos, setTodos] = useState([]);
   const [type, setType] = useState("All");
+  const [toBeFetched, setToBeFetched] = useState(true);
   var tags = todos === [] ? [] : Array.from(new Set(todos.map((a) => a.tag)));
   tags.push("All");
   var text = todos === [] ? [] : todos.map((a) => a.text);
   
+  useEffect(() => {
+    axios.get('http://localhost:3004/items').then((res) => {
+      setTodos(
+        res.data.map((item) => {
+          return {
+            ...item,
+          };
+        })
+      );
+    });
+  }, [toBeFetched]);
 
   const addTodo = (todo) => {
     if (!todo.text || /^\s*$/.test(todo.text)) {
       return;
     }
 
-    const newTodos = [todo, ...todos];
-
-    setTodos(newTodos);
+    axios
+      .post('http://localhost:3004/items', todo)
+      .then(() => setToBeFetched(!toBeFetched));
   };
 
   const updateTodo = (todoId, newValue) => {
@@ -26,46 +39,47 @@ function TodoList() {
       return;
     }
 
-    setTodos((prev) =>
-      prev.map((item) => (item.id === todoId ? newValue : item))
-    );
+    axios
+      .put(`http://localhost:3004/items/${todoId}`, newValue)
+      .then(() => setToBeFetched(!toBeFetched));
   };
 
   const removeTodo = (id) => {
-    const removedArr = [...todos].filter((todo) => todo.id !== id);
-
-    setTodos(removedArr);
+    axios
+      .delete(`http://localhost:3004/items/${id}`)
+      .then(() => setToBeFetched(!toBeFetched));
   };
 
   const completeTodo = (id) => {
-    let updatedTodos = todos.map((todo) => {
+    todos.map((todo) => {
       if (todo.id === id) {
         todo.isComplete = !todo.isComplete;
+        updateTodo(id, todo);
       }
       return todo;
     });
-    setTodos(updatedTodos);
   };
 
   const moveToDodown = (id) => {
-    let arr = [...todos];
-    let index = arr.findIndex((item) => item.id === id);
-    if (index === arr.length - 1) {
+    let data = [...todos];
+    let index = data.findIndex((item) => item.id === id);
+    if (index === data.length - 1) {
       return;
     }
-    [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-    setTodos(arr);
+
+    updateTodo(data[index + 1].id, data[index]);
+    updateTodo(data[index].id, data[index + 1]);
   };
 
   const moveToDoup = (id) => {
-    let arr = [...todos];
-    let index = arr.findIndex((item) => item.id === id);
+    let data = [...todos];
+    let index = data.findIndex((item) => item.id === id);
     if (index === 0) {
       return;
     }
 
-    [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
-    setTodos(arr);
+    updateTodo(data[index - 1].id, data[index]);
+    updateTodo(data[index].id, data[index - 1]);
   };
 
   const filteredData = React.useMemo(() => {
