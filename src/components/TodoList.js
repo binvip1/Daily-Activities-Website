@@ -13,7 +13,7 @@ function TodoList() {
   var text = todos === [] ? [] : todos.map((a) => a.text);
   
   useEffect(() => {
-    axios.get('http://localhost:3004/items').then((res) => {
+    axios.get('https://kakashi-backend.herokuapp.com/items').then((res) => {
       setTodos(
         res.data.map((item) => {
           return {
@@ -30,7 +30,7 @@ function TodoList() {
     }
 
     axios
-      .post('http://localhost:3004/items', todo)
+      .post('https://kakashi-backend.herokuapp.com/items', todo)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
@@ -40,13 +40,13 @@ function TodoList() {
     }
 
     axios
-      .put(`http://localhost:3004/items/${todoId}`, newValue)
+      .put(`https://kakashi-backend.herokuapp.com/items/${todoId}`, newValue)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
   const removeTodo = (id) => {
     axios
-      .delete(`http://localhost:3004/items/${id}`)
+      .delete(`https://kakashi-backend.herokuapp.com/items/${id}`)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
