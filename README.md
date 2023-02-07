@@ -1,8 +1,5 @@
 # Daily Activities Website
 
-
-### Link to website
-https://main.d76u8zuibsskx.amplifyapp.com/
-
-### Link to backend repo
-https://github.com/minhducpham1902/Daily-Activities-Website-backend
+## ABOUT
+This is a daily tasks reminder web app allows user to create a to do list, delete task, rearrange task, mark as done.
+This app uses ReactJs for frontend; JSON server and nodejs for backend to create fake REST API.
