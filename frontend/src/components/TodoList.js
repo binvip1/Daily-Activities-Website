@@ -11,9 +11,9 @@ function TodoList() {
   var tags = todos === [] ? [] : Array.from(new Set(todos.map((a) => a.tag)));
   tags.push("All");
   var text = todos === [] ? [] : todos.map((a) => a.text);
-  
+
   useEffect(() => {
-    axios.get('https://kakashi-backend.herokuapp.com/items').then((res) => {
+    axios.get('https://daily-activities.fly.dev/items').then((res) => {
       setTodos(
         res.data.map((item) => {
           return {
@@ -30,7 +30,7 @@ function TodoList() {
     }
 
     axios
-      .post('https://kakashi-backend.herokuapp.com/items', todo)
+      .post('https://daily-activities.fly.dev/items', todo)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
@@ -40,13 +40,13 @@ function TodoList() {
     }
 
     axios
-      .put(`https://kakashi-backend.herokuapp.com/items/${todoId}`, newValue)
+      .put(`https://daily-activities.fly.dev/items/${todoId}`, newValue)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
   const removeTodo = (id) => {
     axios
-      .delete(`https://kakashi-backend.herokuapp.com/items/${id}`)
+      .delete(`https://daily-activities.fly.dev/items/${id}`)
       .then(() => setToBeFetched(!toBeFetched));
   };
 
@@ -110,7 +110,7 @@ function TodoList() {
       <input className="searchBar"
         placeholder="Search"
         value={search}
-        onChange={(event) => 
+        onChange={(event) =>
           setSearch(event.target.value)
         }
       />
